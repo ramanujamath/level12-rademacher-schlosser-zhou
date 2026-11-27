@@ -20,6 +20,19 @@ two preprints that the original draft did not cite:
 In addition, a(6m+4) = 0 is an instance of the Andrews–Bressoud vanishing
 theorem (J. Austral. Math. Soc. 27 (1979)), and it was already recorded in OEIS A230536.
 
+**Timeline (from the arXiv records):**
+
+| Date | Event |
+|---|---|
+| 12 Sep 2025 | He–Li, arXiv:2509.10023 v1 (δ = −1 for large indices) |
+| 16 Sep 2026 | Padhi, arXiv:2609.22324 v1 (complete treatment) |
+| 22 Sep 2026 | This manuscript submitted to *The Ramanujan Journal* (per the author) |
+
+Padhi's preprint appeared six days before submission, and the author was not
+aware of it. The two works are therefore independent and essentially
+simultaneous. The He–Li preprint predates the submission by a year, so it is
+cited as earlier work on the large-index case.
+
 **Change:** the abstract and introduction no longer present the result as the
 first proof. A new subsection, "Relation to other work", cites He–Li, Padhi and
 Andrews–Bressoud. It presents the paper as an independent proof by a different

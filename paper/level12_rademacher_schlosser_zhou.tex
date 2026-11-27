@@ -1,0 +1,480 @@
+\documentclass[11pt]{amsart}
+
+\usepackage[margin=1.1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!60!black,citecolor=blue!60!black,urlcolor=blue!60!black]{hyperref}
+
+\numberwithin{equation}{section}
+\predisplaypenalty=0
+\widowpenalty=500
+\clubpenalty=500
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\SL}{\mathrm{SL}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\inv}[1]{\overline{#1}}
+
+\title[A Rademacher expansion for a level-12 Hauptmodul]{A Rademacher expansion for a level-12 Hauptmodul\\ and a sign conjecture of Schlosser and Zhou}
+
+\author{Sumit Kumar Jha}
+\email{sumitkumarjha75@gmail.com}
+
+\subjclass[2020]{Primary 11F30; Secondary 11P55, 11L05}
+\keywords{Rademacher series, generalized eta function, Hauptmodul, Kloosterman sum, sign pattern, vanishing coefficients}
+
+
+
+\begin{document}
+
+\begin{abstract}
+Let $Q_{12}(q)=(q,q^{11};q^{12})_\infty/(q^5,q^7;q^{12})_\infty$. Schlosser and Zhou conjectured that the power series coefficients of $Q_{12}(q)^{-1}$ follow the sign pattern $+\,+\,+\,+\,+\,0\,-\,-\,-\,-\,-\,0$, repeating with period $12$. We give an exact formula for these coefficients and use it to determine all of their signs and all of their zeros. The function $q^{-1}Q_{12}(q)^{-1}$ is a modular function for the congruence group $\Gamma_1(12)$ with a single simple pole, and its coefficients are given by a convergent series of Rademacher type whose terms involve Kloosterman sums restricted to $d\equiv\pm1\pmod{12}$. Splitting these sums with the quadratic character of conductor $12$ shows that every single term of the series vanishes when the index is $\equiv 4\pmod 6$; this explains the zero coefficients term by term. The first term of the series is an explicit cosine times a Bessel function, and the classical Weil bound controls all the remaining terms with explicit constants. Together with an exact computer check of the first $575$ coefficients, this proves the conjectured sign pattern and shows that exactly one coefficient vanishes outside the forced residue classes.
+\end{abstract}
+
+\maketitle
+
+\section{Introduction}\label{sec:intro}
+
+\subsection{The problem}
+Throughout, $q$ is a complex number with $|q|<1$, and we use the standard product notation
+\[
+(a;q)_\infty=\prod_{j\ge 0}(1-aq^j),\qquad (a_1,\dots,a_r;q)_\infty=\prod_{i=1}^r(a_i;q)_\infty .
+\]
+In the appendix of~\cite{SZ}, Schlosser and Zhou recorded a series of experimentally observed sign patterns for the coefficients of infinite products raised to real powers. One of their products has modulus~$12$:
+\begin{equation}\label{eq:Q12}
+Q_{12}(q)=\frac{(q,q^{11};q^{12})_\infty}{(q^5,q^7;q^{12})_\infty}.
+\end{equation}
+Write
+\begin{equation}\label{eq:b}
+Q_{12}(q)^{-1}=\frac{(q^5,q^7;q^{12})_\infty}{(q,q^{11};q^{12})_\infty}=\sum_{N\ge0}b(N)q^N
+=1+q+q^2+q^3+q^4-q^7-q^8-q^9-q^{10}+q^{12}+\cdots.
+\end{equation}
+Part of Conjecture~24 of~\cite{SZ} (the case $\delta=-1$ of that conjecture) asserts that the signs of $b(N)$ repeat with period~$12$ according to
+\[
+\underbrace{+\ +\ +\ +\ +}_{N\equiv 0,\dots,4}\ \ \underbrace{0}_{5}\ \ \underbrace{-\ -\ -\ -\ -}_{6,\dots,10}\ \ \underbrace{0}_{11}\pmod{12}.
+\]
+As usual in this literature, a ``$+$'' in such a pattern means $b(N)\ge0$ and a ``$-$'' means $b(N)\le0$; a ``$0$'' means that $b(N)=0$ is asserted.
+
+In this paper we prove this statement by a method different from the circle-method approach of earlier work: we write down an \emph{exact} formula for the coefficients, and read the signs and the zeros off that formula. We also find every zero of the sequence.
+
+\subsection{The function \texorpdfstring{$T$}{T}}
+Let $\mathbb H=\{\tau\in\mathbb C:\operatorname{Im}\tau>0\}$ be the upper half-plane and put $q=e^{2\pi i\tau}$. It is convenient to multiply~\eqref{eq:b} by $q^{-1}$:
+\begin{equation}\label{eq:T}
+T(\tau)=q^{-1}Q_{12}(q)^{-1}=q^{-1}\frac{(q^5,q^7;q^{12})_\infty}{(q,q^{11};q^{12})_\infty}
+=q^{-1}+1+\sum_{n\ge1}a(n)q^n,\qquad a(n)=b(n+1).
+\end{equation}
+This sequence is entry A230536 of the OEIS~\cite{OEIS}. The point of the normalisation is that $T$ is a \emph{modular function}, as we now explain.
+
+The group $\SL_2(\Z)$ of integer $2\times2$ matrices of determinant $1$ acts on $\mathbb H$ by $\gamma\tau=(a\tau+b)/(c\tau+d)$ for $\gamma=\left(\begin{smallmatrix}a&b\\c&d\end{smallmatrix}\right)$. The congruence subgroup
+\[
+\Gamma_1(12)=\Bigl\{\begin{pmatrix}a&b\\c&d\end{pmatrix}\in\SL_2(\Z):\ c\equiv0,\ a\equiv d\equiv1\pmod{12}\Bigr\}
+\]
+has finite index in $\SL_2(\Z)$. A \emph{modular function} for a subgroup $\Gamma$ of finite index is a meromorphic function $f$ on $\mathbb H$ with $f(\gamma\tau)=f(\tau)$ for all $\gamma\in\Gamma$ that has at worst poles at the cusps; the \emph{cusps} are the points of $\mathbb{Q}\cup\{\infty\}$, taken up to the action of $\Gamma$. Adding the cusps to the quotient $\Gamma\backslash\mathbb H$ gives a compact Riemann surface $X(\Gamma)$. When $X(\Gamma)$ has genus zero, a modular function that takes each value exactly once on $X(\Gamma)$ (equivalently, one with exactly one pole, which is simple) is called a \emph{Hauptmodul}; every other modular function for $\Gamma$ is then a rational function of it.
+
+The function $T$ is a quotient of two \emph{generalised Dedekind eta functions} in the sense of Yang~\cite{Yang}, and Yang's transformation formulas show that it is a Hauptmodul for $\Gamma_1(12)$; it appears as number~13 in his table of such Hauptmoduln~\cite[Table~1]{Yang}. In particular $T$ is holomorphic on $\mathbb H$ and at every cusp other than $\infty$, and its only pole is the simple pole $q^{-1}$ at $\infty$. (Both facts are also confirmed numerically by the script \texttt{check\_modularity.py} described in Appendix~\ref{app:code}.)
+
+\subsection{The exact formula}
+For real $x$ put $\e(x)=e^{2\pi i x}$. For a positive integer $c$ and an integer $d$ coprime to $c$, let $\inv d$ denote an inverse of $d$ modulo $c$, so $d\inv d\equiv1\pmod c$. For $12\mid c$ and $n\in\Z$ we define the \emph{restricted Kloosterman sum}
+\begin{equation}\label{eq:K12}
+K_{12}(n;c)=\sum_{\substack{d \bmod c\\ \gcd(d,c)=1\\ d\equiv\pm1 \ (\mathrm{mod}\ 12)}}\e\!\left(\frac{nd-\inv d}{c}\right).
+\end{equation}
+Replacing $d$ by $-d$ shows that $K_{12}(n;c)$ is a real number. Let $I_1$ denote the modified Bessel function of the first kind of order one,
+\begin{equation}\label{eq:I1}
+I_1(x)=\sum_{j\ge0}\frac{1}{j!\,(j+1)!}\Bigl(\frac x2\Bigr)^{2j+1}.
+\end{equation}
+
+\begin{theorem}\label{thm:exact}
+For every $n\ge1$,
+\begin{equation}\label{eq:exact}
+a(n)=\frac{2\pi}{\sqrt n}\sum_{\substack{c\ge1\\12\mid c}}\frac{K_{12}(n;c)}{c}\,I_1\!\left(\frac{4\pi\sqrt n}{c}\right),
+\end{equation}
+and the series converges absolutely.
+\end{theorem}
+
+The first term of the series is completely explicit: for $c=12$ the admissible $d$ are $1$ and $11$, both equal to their own inverses, so
+\begin{equation}\label{eq:K12first}
+K_{12}(n;12)=\e\!\left(\frac{n-1}{12}\right)+\e\!\left(\frac{-(n-1)}{12}\right)=2\cos\frac{\pi(n-1)}{6}.
+\end{equation}
+This cosine already has the conjectured period-$12$ sign pattern, and it vanishes exactly when $n\equiv4\pmod 6$. The vanishing persists in \emph{every} term.
+
+\begin{theorem}\label{thm:vanish}
+If $n\equiv4\pmod6$, then $K_{12}(n;c)=0$ for every $c$ divisible by $12$. Consequently $a(6m+4)=0$ for all $m\ge0$.
+\end{theorem}
+
+The identity $a(6m+4)=0$ itself is known: it is recorded in the OEIS entry~\cite{OEIS}, and it is an instance of the vanishing theorem of Andrews and Bressoud~\cite{AB}. The new point is that the zeros are not produced by cancellation between different terms of~\eqref{eq:exact}; each term is zero on its own.
+
+Separating the first term from the rest and bounding the rest gives an asymptotic formula.
+
+\begin{corollary}\label{cor:asymp}
+As $n\to\infty$,
+\begin{equation}\label{eq:asymp}
+a(n)=\frac{1}{\sqrt6}\cos\!\Bigl(\frac{\pi(n-1)}{6}\Bigr)\,n^{-3/4}e^{\pi\sqrt n/3}
+\Bigl(1-\frac{9}{8\pi\sqrt n}-\frac{135}{128\pi^2 n}+O\bigl(n^{-3/2}\bigr)\Bigr)+O\bigl(e^{\pi\sqrt n/6}\bigr).
+\end{equation}
+\end{corollary}
+
+With explicit constants in place of the $O$-terms, a finite computation finishes the job.
+
+\begin{theorem}\label{thm:signs}
+For $n\ge1$:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $a(n)=0$ if $n\equiv4\pmod6$;
+\item $a(5)=0$;
+\item for every other $n$, $a(n)\neq0$ and $\sgn a(n)=\sgn\cos\bigl(\pi(n-1)/6\bigr)$.
+\end{enumerate}
+In particular, the set of $n\ge1$ with $a(n)=0$ is exactly $\{5\}\cup\{6m+4: m\ge0\}$.
+\end{theorem}
+
+Since $b(N)=a(N-1)$ for $N\ge2$ and $b(0)=b(1)=1$, we obtain the Schlosser--Zhou pattern with every inequality strict except at a single place.
+
+\begin{corollary}\label{cor:SZ}
+The case $\delta=-1$ of Conjecture~24 of~\cite{SZ} holds. More precisely, for every $m\ge0$,
+\begin{align*}
+b(12m+r)&>0\quad (r=0,1,2,3,4), & b(12m+r)&<0\quad (r=7,8,9,10),\\
+b(12m+5)&=0, & b(12m+11)&=0,
+\end{align*}
+and $b(12m+6)<0$ for every $m\ge1$, while $b(6)=0$. Thus $b(6)$ is the only zero of $b$ outside the residue classes $5$ and $11$ modulo $12$.
+\end{corollary}
+
+\begin{proof}
+Put $n=N-1$. The value of $\cos(\pi(n-1)/6)$ depends on $(n-1)\bmod 12=(N-2)\bmod12$; it is positive for $N\equiv0,1,2,3,4$, zero for $N\equiv5,11$, and negative for $N\equiv6,\dots,10\pmod{12}$. Now apply Theorem~\ref{thm:signs}; the exceptional zero $a(5)$ is $b(6)$.
+\end{proof}
+
+\subsection{Relation to other work}
+Bringmann, Heim and Kane~\cite{BHK} proved the analogous modulus-$10$ conjecture of Schlosser and Zhou (Conjecture~22 of~\cite{SZ}) using exact formulas, and Bringmann, Han, Heim and Kane~\cite{BHHK} studied periodic sign changes of ordinary eta quotients. The case $\delta=-1$ of Conjecture~24 has also been treated by He and Li~\cite{HL} and by Padhi~\cite{Padhi}, using the circle method for general products together with the Andrews--Bressoud vanishing theorem for the zero classes; Padhi also settles other values of $\delta$. The present paper gives an independent and self-contained proof by a different route. Its features are: an exact convergent formula~\eqref{eq:exact} rather than an asymptotic one; a term-by-term explanation of the zero progression (Theorem~\ref{thm:vanish}); an error bound that uses only the classical Weil bound for ordinary Kloosterman sums, with all constants explicit; and a complete description of the zero set.
+
+\subsection{Outline}
+Section~\ref{sec:exact} proves Theorem~\ref{thm:exact}. Section~\ref{sec:vanish} splits $K_{12}$ using a quadratic character and proves Theorem~\ref{thm:vanish}. Section~\ref{sec:tail} bounds $K_{12}$ and the tail of the series and proves Corollary~\ref{cor:asymp}. Section~\ref{sec:signs} proves Theorem~\ref{thm:signs}. Appendix~\ref{app:code} describes the accompanying verification scripts.
+
+\subsection*{Notation}
+$\tau(c)$ denotes the number of positive divisors of $c$ (no confusion with the variable $\tau\in\mathbb H$ should arise). For integers $A,B$, a positive integer $c$, and a function $\psi$ on integers coprime to $c$ (always a Dirichlet character below), we write
+\begin{equation}\label{eq:S}
+S_\psi(A,B;c)=\sum_{\substack{d\bmod c\\ \gcd(d,c)=1}}\psi(d)\,\e\!\left(\frac{Ad+B\inv d}{c}\right),
+\end{equation}
+and $S(A,B;c)$ when $\psi\equiv1$; the latter is the classical Kloosterman sum.
+
+\section{The exact formula}\label{sec:exact}
+
+Let $\Gamma=\{\pm\gamma:\gamma\in\Gamma_1(12)\}$. Since $-I$ acts trivially on $\mathbb H$, $T$ is also invariant under $\Gamma$. The subgroup of $\Gamma$ fixing $\infty$ is
+\[
+\Gamma_\infty=\Bigl\{\pm\begin{pmatrix}1&k\\0&1\end{pmatrix}:k\in\Z\Bigr\},
+\]
+so the cusp $\infty$ has width one and $q=e^{2\pi i\tau}$ is the natural local variable there.
+
+\begin{lemma}\label{lem:cosets}
+The double cosets $\Gamma_\infty\gamma\Gamma_\infty$ with $\gamma=\left(\begin{smallmatrix}a&b\\c&d\end{smallmatrix}\right)\in\Gamma$ and $c>0$ are in one-to-one correspondence with the pairs $(c,d\bmod c)$ satisfying
+\begin{equation}\label{eq:cd}
+c>0,\qquad 12\mid c,\qquad \gcd(c,d)=1,\qquad d\equiv\pm1\pmod{12}.
+\end{equation}
+For such $\gamma$ one has $a\equiv\inv d\pmod c$.
+\end{lemma}
+
+\begin{proof}
+Every element of $\Gamma$ is congruent modulo $12$ to $\varepsilon\left(\begin{smallmatrix}1&*\\0&1\end{smallmatrix}\right)$ with $\varepsilon=\pm1$, so its lower row satisfies~\eqref{eq:cd}, and $ad\equiv1\pmod c$ because $ad-bc=1$. Conversely, given $(c,d)$ as in~\eqref{eq:cd}, choose $a$ with $ad\equiv1\pmod c$ and put $b=(ad-1)/c$. Reducing $ad\equiv1$ modulo $12$ (which divides $c$) gives $a\equiv d\equiv\varepsilon\pmod{12}$ for the same sign $\varepsilon$, so the matrix lies in $\Gamma$. Multiplying $\gamma$ on the left by $\left(\begin{smallmatrix}1&k\\0&1\end{smallmatrix}\right)$ changes $a$ by a multiple of $c$, multiplying on the right changes $d$ by a multiple of $c$, and the sign $\pm$ in $\Gamma_\infty$ is used up by requiring $c>0$. Hence the double coset determines and is determined by $c$ and $d\bmod c$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:exact}]
+We use the classical exact formula for the coefficients of a modular function with a single pole, due to Rademacher for $\SL_2(\Z)$ and extended to subgroups of finite index by Zuckerman~\cite{Zuckerman}; Niebur~\cite{Niebur} gave a construction by Poincaré series that we follow here.
+
+Let $F(\tau)$ be the weight-zero Niebur Poincaré series for $\Gamma$ attached to the principal part $q^{-1}$ at $\infty$, evaluated at the special point $s=1$ of its spectral parameter~\cite{Niebur}. It is a $\Gamma$-invariant function on $\mathbb H$ whose expansion at $\infty$ is $q^{-1}$ plus a constant plus $\sum_{n\ge1}f(n)q^n$, with
+\begin{equation}\label{eq:niebur}
+f(n)=\frac{2\pi}{\sqrt n}\sum_{c>0}\frac{\mathcal K(n;c)}{c}\,I_1\!\left(\frac{4\pi\sqrt n}{c}\right),\qquad
+\mathcal K(n;c)=\sum_{\substack{\Gamma_\infty\gamma\Gamma_\infty\\ \gamma=\left(\begin{smallmatrix}a&b\\c&d\end{smallmatrix}\right)}}\e\!\left(\frac{-a+nd}{c}\right),
+\end{equation}
+the inner sum running over the double cosets with lower-left entry $c$, and it is bounded at every other cusp. In general $F$ is only harmonic, with a non-holomorphic part governed by the cusp forms of weight two for $\Gamma$. Here $X(\Gamma)$ has genus zero, so there are no such cusp forms, and $F$ is a genuine modular function. Then $T-F$ is a modular function for $\Gamma$ that is bounded at every cusp, hence constant, because a non-constant function on the compact surface $X(\Gamma)$ must have a pole. So $a(n)=f(n)$ for $n\ge1$. By Lemma~\ref{lem:cosets}, $\mathcal K(n;c)=0$ unless $12\mid c$, and for $12\mid c$ the phase is $\e((nd-a)/c)=\e((nd-\inv d)/c)$ with $d$ running over the residues~\eqref{eq:cd}; that is, $\mathcal K(n;c)=K_{12}(n;c)$. This gives~\eqref{eq:exact}. Absolute convergence follows from Lemma~\ref{lem:weil} and~\eqref{eq:I1upper} below, which show that the $c$-th term is $O_n\bigl(\tau(c)c^{-3/2}\bigr)$.
+\end{proof}
+
+\begin{remark}
+As an independent check of the normalisation, truncating~\eqref{eq:exact} at $c\le 2400$ reproduces the exact integers $a(n)$ to within $0.03$ for all $1\le n\le150$ (script \texttt{check\_rademacher.py}).
+\end{remark}
+
+\section{Splitting by a character, and termwise vanishing}\label{sec:vanish}
+
+Let $\chi_{12}$ be the quadratic Dirichlet character of conductor $12$: for $\gcd(d,6)=1$,
+\[
+\chi_{12}(d)=\begin{cases}\phantom{-}1,& d\equiv\pm1\pmod{12},\\-1,& d\equiv\pm5\pmod{12}.\end{cases}
+\]
+Every integer coprime to $12$ is $\equiv\pm1$ or $\pm5\pmod{12}$, so for $12\mid c$ and $\gcd(d,c)=1$,
+\begin{equation}\label{eq:indicator}
+\mathbf 1_{d\equiv\pm1\,(12)}=\frac{1+\chi_{12}(d)}{2},
+\qquad\text{hence}\qquad
+K_{12}(n;c)=\tfrac12\bigl(S(n,-1;c)+S_{\chi_{12}}(n,-1;c)\bigr).
+\end{equation}
+We show that both sums on the right vanish when $n\equiv4\pmod6$: the first because $n$ is even, the second because $n\equiv1\pmod3$.
+
+\begin{lemma}\label{lem:untwisted}
+If $4\mid c$ and $n$ is even, then $S(n,-1;c)=0$.
+\end{lemma}
+
+\begin{proof}
+For a unit $d$ modulo $c$ put $d'=d+c/2$. Since $4\mid c$, the number $c/2$ is even, and every odd prime dividing $c$ divides $c/2$; so $d'$ is again a unit. The map $d\mapsto d'$ is an involution on the units modulo $c$ without fixed points. Since $d$ and $\inv d$ are odd, $d+\inv d$ is even, and
+\[
+\Bigl(d+\frac c2\Bigr)\Bigl(\inv d+\frac c2\Bigr)=d\inv d+\frac c2\,(d+\inv d)+c\cdot\frac c4\equiv1\pmod c,
+\]
+so $\inv{d'}\equiv\inv d+c/2$. Therefore the phases of the terms for $d$ and $d'$ differ by the factor $\e\bigl((n-1)(c/2)/c\bigr)=(-1)^{n-1}=-1$, and the terms cancel in pairs.
+\end{proof}
+
+For the twisted sum we need the standard Chinese-remainder factorisation of Kloosterman sums.
+
+\begin{lemma}\label{lem:crt}
+Let $c=c_1c_2$ with $\gcd(c_1,c_2)=1$, and let $\psi_1,\psi_2$ be Dirichlet characters modulo $c_1,c_2$, with $\psi=\psi_1\psi_2$. Let $u$ be an inverse of $c_2$ modulo $c_1$ and $v$ an inverse of $c_1$ modulo $c_2$. Then
+\[
+S_\psi(A,B;c)=S_{\psi_1}(uA,uB;c_1)\,S_{\psi_2}(vA,vB;c_2).
+\]
+\end{lemma}
+
+\begin{proof}
+By the Chinese remainder theorem, the units $d$ modulo $c$ correspond bijectively to pairs of units $(x_1\bmod c_1,\ x_2\bmod c_2)$ via $d\equiv x_i\pmod{c_i}$, and then $\inv d\equiv\inv{x_i}\pmod{c_i}$ and $\psi(d)=\psi_1(x_1)\psi_2(x_2)$. Since $uc_2+vc_1\equiv1\pmod{c}$, we have $\e(y/c)=\e(uy/c_1)\,\e(vy/c_2)$ for every integer $y$. Applying this with $y=Ad+B\inv d$ and reducing modulo $c_1$ and $c_2$ separately gives the factorisation.
+\end{proof}
+
+\begin{lemma}\label{lem:twisted}
+If $12\mid c$ and $n\equiv1\pmod3$, then $S_{\chi_{12}}(n,-1;c)=0$.
+\end{lemma}
+
+\begin{proof}
+Write $c=3^\beta c'$ with $\beta\ge1$ and $3\nmid c'$; then $4\mid c'$. Let $\chi_3$ and $\chi_4$ be the non-trivial characters modulo $3$ and $4$. Then $\chi_{12}=\chi_3\chi_4$, where $\chi_3$ is read modulo $3^\beta$ and $\chi_4$ modulo $c'$. Lemma~\ref{lem:crt} shows that $S_{\chi_{12}}(n,-1;c)$ has the factor
+\[
+\Sigma=\sum_{\substack{x\bmod 3^\beta\\ 3\nmid x}}\chi_3(x)\,\e\!\left(\frac{Ax+B\inv x}{3^\beta}\right),\qquad A=\lambda n,\quad B=-\lambda,
+\]
+where $\lambda$ is an inverse of $c'$ modulo $3^\beta$, hence prime to $3$. We show $\Sigma=0$.
+
+If $\beta=1$, then $\inv x\equiv x\pmod 3$, so $Ax+B\inv x\equiv\lambda(n-1)x\equiv0\pmod3$. Both exponentials equal $1$, and $\Sigma=\chi_3(1)+\chi_3(2)=0$.
+
+If $\beta\ge2$, put $h=3^{\beta-1}$. The units modulo $3^\beta$ split into triples $x,\,x+h,\,x+2h$, one for each unit $x$ modulo $h$, and $\chi_3$ is constant on each triple because $3\mid h$. Since $2(\beta-1)\ge\beta$, we have $h^2\equiv0\pmod{3^\beta}$, so
+$(x+th)(\inv x-th\inv x^{\,2})\equiv1$ and hence $\inv{x+th}\equiv\inv x-th\inv x^{\,2}\pmod{3^\beta}$ for $t=0,1,2$. Thus
+\[
+A(x+th)+B\,\inv{x+th}\equiv(Ax+B\inv x)+th\,(A-B\inv x^{\,2})\pmod{3^\beta},
+\]
+and the three terms of the triple carry the phases $\e\bigl((Ax+B\inv x)/3^\beta\bigr)\,\zeta^{tk}$ with $\zeta=\e(1/3)$ and $k=A-B\inv x^{\,2}$. Because $\inv x^{\,2}\equiv1\pmod3$ and $n\equiv1\pmod 3$, we get $k=\lambda(n+\inv x^{\,2})\equiv2\lambda\not\equiv0\pmod3$, so $1+\zeta^k+\zeta^{2k}=0$. Every triple contributes zero, and $\Sigma=0$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:vanish}]
+If $n\equiv4\pmod6$, then $n$ is even and $n\equiv1\pmod3$. For $12\mid c$, Lemmas~\ref{lem:untwisted} and~\ref{lem:twisted} and~\eqref{eq:indicator} give $K_{12}(n;c)=0$, and Theorem~\ref{thm:exact} then gives $a(n)=0$.
+\end{proof}
+
+\section{Bounding the remaining terms}\label{sec:tail}
+
+The bound we need for $K_{12}(n;c)$ follows from the classical Weil bound for ordinary Kloosterman sums: for all integers $m,n$ and $c\ge1$,
+\[
+|S(m,n;c)|\le\tau(c)\,\gcd(m,n,c)^{1/2}\,c^{1/2};
+\]
+see, for example, \cite[Corollary~11.12]{IK}. We avoid twisted Kloosterman sums by detecting the condition $d\equiv\pm1\pmod{12}$ with additive characters.
+
+\begin{lemma}\label{lem:weil}
+For every $n\in\Z$ and every $c$ divisible by $12$,
+\begin{equation}\label{eq:Kbound}
+|K_{12}(n;c)|\le\frac{2+\sqrt3}{3}\,\tau(c)\sqrt c<\frac54\,\tau(c)\sqrt c.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+For $\varepsilon=\pm1$ we have $\mathbf 1_{d\equiv\varepsilon\,(12)}=\frac1{12}\sum_{h=0}^{11}\e\bigl(h(d-\varepsilon)/12\bigr)$, and since $12\mid c$, $\e(hd/12)=\e\bigl((hc/12)\,d/c\bigr)$. Inserting this into~\eqref{eq:K12} and adding the two values of $\varepsilon$ gives
+\begin{equation}\label{eq:additive}
+K_{12}(n;c)=\frac16\sum_{h=0}^{11}\cos\Bigl(\frac{\pi h}{6}\Bigr)\,S\Bigl(n+\frac{hc}{12},\,-1;\,c\Bigr).
+\end{equation}
+Each Kloosterman sum here has second argument $-1$, so the gcd in the Weil bound is $1$ and $|S(\cdot,-1;c)|\le\tau(c)\sqrt c$. Since $\sum_{h=0}^{11}|\cos(\pi h/6)|=4+2\sqrt3$, the first inequality follows. The second holds because $\sqrt3<7/4$.
+\end{proof}
+
+We also use two elementary facts about $I_1$. Comparing~\eqref{eq:I1} term by term with $e^x=\sum_k x^k/k!$ and using $(2j)!\le 4^j j!\,(j+1)!$ gives
+\begin{equation}\label{eq:I1upper}
+I_1(x)\le\frac x2\,e^x\qquad(x\ge0),
+\end{equation}
+and the classical asymptotic expansion (see~\cite[\S4.12]{AAR}) is
+\begin{equation}\label{eq:I1asymp}
+I_1(x)=\frac{e^x}{\sqrt{2\pi x}}\Bigl(1-\frac3{8x}-\frac{15}{128x^2}+O(x^{-3})\Bigr)\qquad(x\to\infty).
+\end{equation}
+
+Now split~\eqref{eq:exact} into its first term and the rest. By~\eqref{eq:K12first},
+\begin{equation}\label{eq:ME}
+a(n)=M(n)+E(n),\qquad M(n)=\frac{\pi}{3\sqrt n}\cos\Bigl(\frac{\pi(n-1)}6\Bigr)\,I_1\Bigl(\frac{\pi\sqrt n}{3}\Bigr),
+\end{equation}
+where $E(n)$ is the sum of the terms with $c\ge24$.
+
+\begin{proposition}\label{prop:tail}
+For every $n\ge1$, $|E(n)|<42\,e^{\pi\sqrt n/6}$.
+\end{proposition}
+
+\begin{proof}
+By Lemma~\ref{lem:weil} and~\eqref{eq:I1upper}, with $C=(2+\sqrt3)/3$, the term of~\eqref{eq:exact} for a given $c$ is at most
+\[
+\frac{2\pi}{\sqrt n}\cdot\frac{C\tau(c)\sqrt c}{c}\cdot\frac{2\pi\sqrt n}{c}\,e^{4\pi\sqrt n/c}
+=4\pi^2C\,\frac{\tau(c)}{c^{3/2}}\,e^{4\pi\sqrt n/c}
+\]
+in absolute value. For $c\ge24$ the exponential is at most $e^{\pi\sqrt n/6}$. Write $c=12m$ with $m\ge2$; since the divisor function satisfies $\tau(xy)\le\tau(x)\tau(y)$, we have $\tau(12m)\le6\tau(m)$. Using $\sum_{m\ge1}\tau(m)m^{-s}=\zeta(s)^2$,
+\[
+|E(n)|\le\frac{24\pi^2C}{12^{3/2}}\sum_{m\ge2}\frac{\tau(m)}{m^{3/2}}\,e^{\pi\sqrt n/6}
+=\frac{24\pi^2C}{12^{3/2}}\bigl(\zeta(3/2)^2-1\bigr)e^{\pi\sqrt n/6}.
+\]
+With $\pi^2<9.87$, $C<5/4$, $\zeta(3/2)=2.6123\ldots<2.62$ and $12^{3/2}=24\sqrt3>41.56$, the constant is less than $41.8<42$.
+\end{proof}
+
+\begin{proof}[Proof of Corollary~\ref{cor:asymp}]
+Put $x=\pi\sqrt n/3$ in~\eqref{eq:I1asymp}. Then $\sqrt{2\pi x}=\pi\sqrt{2/3}\,n^{1/4}$, $3/(8x)=9/(8\pi\sqrt n)$ and $15/(128x^2)=135/(128\pi^2n)$, so~\eqref{eq:ME} gives the main term of~\eqref{eq:asymp}, using $3\sqrt{2/3}=\sqrt6$. Proposition~\ref{prop:tail} gives the error term.
+\end{proof}
+
+\section{The exact sign pattern}\label{sec:signs}
+
+\subsection{The main term wins for \texorpdfstring{$n\ge576$}{n >= 576}}
+Suppose $n\not\equiv4\pmod6$, so that the cosine in~\eqref{eq:ME} is non-zero. Its possible values are $\pm1,\pm\frac{\sqrt3}2,\pm\frac12$, so
+\begin{equation}\label{eq:coshalf}
+\Bigl|\cos\Bigl(\frac{\pi(n-1)}6\Bigr)\Bigr|\ge\frac12.
+\end{equation}
+We need a lower bound for $I_1$. Starting from the integral representation~\cite[\S4.12]{AAR}
+\begin{equation}\label{eq:I1int}
+I_1(x)=\frac x\pi\int_{-1}^1e^{xt}\sqrt{1-t^2}\,dt\qquad(x>0),
+\end{equation}
+let $x\ge1$, keep only $0\le t\le1$, substitute $t=1-u$, and keep only $0\le u\le1/x$. There $1-t^2=2u-u^2\ge u$, so
+\[
+I_1(x)\ge\frac{x e^x}{\pi}\int_0^{1/x}e^{-xu}\sqrt u\,du=\frac{e^x}{\pi\sqrt x}\int_0^1e^{-v}\sqrt v\,dv
+>\frac{e^x}{\pi\sqrt x}\cdot\frac1e\int_0^1\sqrt v\,dv=\frac{2}{3e}\cdot\frac{e^x}{\pi\sqrt x}.
+\]
+Since $2/(3e)>2/9$,
+\begin{equation}\label{eq:I1lower}
+I_1(x)>\frac{2\,e^x}{9\pi\sqrt x}\qquad(x\ge1).
+\end{equation}
+Take $x=\pi\sqrt n/3$, which is at least $1$ for every $n\ge1$. Combining~\eqref{eq:ME},~\eqref{eq:coshalf} and~\eqref{eq:I1lower},
+\[
+|M(n)|>\frac{\pi}{6\sqrt n}\cdot\frac{2\,e^{\pi\sqrt n/3}}{9\pi\sqrt{\pi/3}\,n^{1/4}}=\frac{\sqrt{3/\pi}}{27}\,n^{-3/4}e^{\pi\sqrt n/3}>\frac1{28}\,n^{-3/4}e^{\pi\sqrt n/3},
+\]
+where the last step uses $\pi<3\,(28/27)^2$. By Proposition~\ref{prop:tail}, $|M(n)|>|E(n)|$ as soon as
+\begin{equation}\label{eq:dominance}
+e^{\pi\sqrt n/6}>1176\,n^{3/4}\qquad(1176=28\cdot42).
+\end{equation}
+The logarithm of the left side minus that of the right side has derivative $\pi/(12\sqrt n)-3/(4n)$ in $n$, which is positive for $n\ge9$. At $n=576=24^2$ the left side is $e^{4\pi}>e^{12}>2.718^{12}>162{,}000$, while the right side is $1176\cdot24^{3/2}<1176\cdot24\cdot4.9<139{,}000$. So~\eqref{eq:dominance} holds for all $n\ge576$, and for these $n$, when $n\not\equiv4\pmod 6$,
+\begin{equation}\label{eq:signlarge}
+a(n)\neq0\qquad\text{and}\qquad\sgn a(n)=\sgn M(n)=\sgn\cos\Bigl(\frac{\pi(n-1)}6\Bigr).
+\end{equation}
+
+\subsection{The first 575 coefficients}
+For the remaining range we compute the coefficients exactly. Write
+\begin{equation}\label{eq:P}
+Q_{12}(q)^{-1}=\sum_{r\ge0}p(r)q^r=\prod_{j\ge1}(1-q^j)^{\rho(j)},\qquad
+\rho(j)=\begin{cases}-1,& j\equiv\pm1\pmod{12},\\ \phantom{-}1,& j\equiv\pm5\pmod{12},\\ \phantom{-}0,&\text{otherwise},\end{cases}
+\end{equation}
+so that $p(r)=b(r)$ and $a(n)=p(n+1)$. Taking the logarithmic derivative, $q\frac{d}{dq}\log\prod_j(1-q^j)^{\rho(j)}=\sum_{k\ge1}B(k)q^k$ with
+\[
+B(k)=-\sum_{d\mid k}d\,\rho(d),
+\]
+and comparing coefficients gives the recurrence
+\begin{equation}\label{eq:recurrence}
+r\,p(r)=\sum_{k=1}^rB(k)\,p(r-k)\qquad(r\ge1),\qquad p(0)=1,
+\end{equation}
+which computes every $p(r)$ with integer arithmetic only.
+
+\begin{lemma}\label{lem:finite}
+For $1\le n\le575$ one has $a(n)=0$ if and only if $n=5$ or $n\equiv4\pmod6$, and for every other $n$ in this range $\sgn a(n)=\sgn\cos(\pi(n-1)/6)$.
+\end{lemma}
+
+\begin{proof}
+This is a finite computation with~\eqref{eq:recurrence}, carried out in exact integer arithmetic; see Appendix~\ref{app:code}. (The script checks the statement up to $n=10{,}000$ and also confirms the recurrence against a direct expansion of the product.)
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:signs}]
+Part~(i) is Theorem~\ref{thm:vanish}. For $n\ge576$ and $n\not\equiv4\pmod6$, statement~\eqref{eq:signlarge} gives part~(iii) and shows there are no further zeros. Lemma~\ref{lem:finite} covers $1\le n\le575$ and shows that $a(5)$ is the only additional zero.
+\end{proof}
+
+\section{Remarks}\label{sec:remarks}
+
+\begin{enumerate}[label=\arabic*.,leftmargin=*]
+\item The formula~\eqref{eq:exact} is a concrete case of the classical Rademacher--Zuckerman theory. What is special here is the arithmetic of the Kloosterman sums: because $T$ is a Hauptmodul for $\Gamma_1(12)$, the sums are restricted to $d\equiv\pm1\pmod{12}$, and the quadratic character of conductor~$12$ then explains both the period-$12$ signs (through the first term) and the zero progression (through every term).
+\item The tail bound of Proposition~\ref{prop:tail} is far from sharp. Numerically $|E(n)|e^{-\pi\sqrt n/6}$ stays below $0.25$ for $n\le4000$, and~\eqref{eq:dominance} already holds from $n=503$ on. Since the finite check is cheap, we have not tried to optimise the constants.
+\item The same approach should apply to other generalised eta Hauptmoduln in Yang's table~\cite{Yang}. Whenever the relevant group is cut out by a congruence condition on the lower-right matrix entry, the Kloosterman sums become restricted sums that can be split by characters, which may explain periodic sign patterns or vanishing coefficients in those examples too.
+\end{enumerate}
+
+\appendix
+\section{Verification scripts}\label{app:code}
+
+The repository
+\begin{center}\url{https://github.com/ramanujamath/level12-rademacher-schlosser-zhou}\end{center}
+contains Python scripts that check every computational statement in this paper. They need only Python~3 with \texttt{numpy} and \texttt{scipy}; \texttt{python3 run\_all.py} runs all of them in about fifteen seconds.
+\begin{itemize}[leftmargin=*]
+\item \texttt{check\_coefficients.py}: exact integer computation of $a(n)$ by~\eqref{eq:recurrence}, cross-checked against direct expansion of the product and against OEIS A230536; verifies Lemma~\ref{lem:finite} and Corollary~\ref{cor:SZ} up to $10{,}000$.
+\item \texttt{check\_modularity.py}: numerically confirms that $T$ is invariant under sample elements of $\Gamma_1(12)$ (and not under elements with $d\equiv\pm5\pmod{12}$), and that $T$ stays bounded at every cusp $a/c$ with $c\mid12$, $c<12$.
+\item \texttt{check\_kloosterman.py}: for every $c\le360$ divisible by $12$ and every residue $n$ modulo $c$, checks~\eqref{eq:K12first},~\eqref{eq:indicator}, Lemmas~\ref{lem:untwisted}--\ref{lem:twisted}, Theorem~\ref{thm:vanish},~\eqref{eq:additive} and the bound~\eqref{eq:Kbound}.
+\item \texttt{check\_rademacher.py}: compares the truncated series~\eqref{eq:exact} with the exact $a(n)$; checks~\eqref{eq:asymp}; and, in $80$-digit arithmetic, checks Proposition~\ref{prop:tail} and $|M(n)|>|E(n)|$ for $576\le n\le4000$.
+\item \texttt{check\_constants.py}: checks the numerical inequalities of Sections~\ref{sec:tail} and~\ref{sec:signs}, the rational ones in exact arithmetic.
+\end{itemize}
+The core of Lemma~\ref{lem:finite} is the following few lines.
+\begin{verbatim}
+def rho(j):
+    r = j % 12
+    return -1 if r in (1, 11) else (1 if r in (5, 7) else 0)
+
+N = 577
+B = [0] * (N + 1)
+for k in range(1, N + 1):
+    B[k] = -sum(d * rho(d) for d in range(1, k + 1) if k % d == 0)
+p = [1] + [0] * N
+for r in range(1, N + 1):
+    s = sum(B[k] * p[r - k] for k in range(1, r + 1))
+    assert s % r == 0
+    p[r] = s // r
+
+for n in range(1, 576):                 # a(n) = p(n+1)
+    a = p[n + 1]
+    if n == 5 or n % 6 == 4:
+        assert a == 0
+    else:
+        positive = (n - 1) % 12 in (0, 1, 2, 10, 11)
+        assert a != 0 and (a > 0) == positive
+\end{verbatim}
+
+\section*{Acknowledgments}
+The author used OpenAI's ChatGPT (GPT-5.6 Sol) as a research-assistance tool. It helped identify the level-12 Hauptmodul A230536 and the case $\delta=-1$ of Schlosser and Zhou's Conjecture~24 as a candidate for an explicit Rademacher treatment; it suggested the Niebur--Poincaré reconstruction, the character decomposition of the restricted Kloosterman sums and the main-term-versus-tail strategy; and it assisted with literature searches and with computational and algebraic checks. Anthropic's Claude was used to revise the exposition, to audit the arguments and constants, and to write the verification scripts. The author independently checked the mathematical arguments, computations and references, and takes full responsibility for the results.
+
+\section*{Declarations}
+\noindent\textbf{Funding.} No funding was received for this work.\\
+\textbf{Data and code availability.} No data sets were used. The verification code is available at \url{https://github.com/ramanujamath/level12-rademacher-schlosser-zhou}.
+
+\begin{thebibliography}{99}
+
+\bibitem{AB}
+G.~E. Andrews and D.~M. Bressoud, \emph{Vanishing coefficients in infinite product expansions}, J. Austral. Math. Soc. Ser. A \textbf{27} (1979), 199--202.
+
+\bibitem{AAR}
+G.~E. Andrews, R. Askey, and R. Roy, \emph{Special Functions}, Encyclopedia of Mathematics and its Applications, vol.~71, Cambridge University Press, Cambridge, 1999.
+
+\bibitem{BHHK}
+K. Bringmann, G.-N. Han, B. Heim, and B. Kane, \emph{Periodic sign changes for weakly holomorphic $\eta$-quotients}, Int. J. Number Theory \textbf{21} (2025), no.~9, 2111--2139.
+
+\bibitem{BHK}
+K. Bringmann, B. Heim, and B. Kane, \emph{On a sign-change conjecture of Schlosser and Zhou}, J. Math. Anal. Appl. \textbf{548} (2025), no.~2, Paper No.~129339.
+
+\bibitem{HL}
+B. He and L. Li, \emph{Some conjectures of Schlosser and Zhou on sign patterns of the coefficients of infinite products}, preprint, arXiv:2509.10023, 2025.
+
+\bibitem{IK}
+H. Iwaniec and E. Kowalski, \emph{Analytic Number Theory}, American Mathematical Society Colloquium Publications, vol.~53, American Mathematical Society, Providence, RI, 2004.
+
+\bibitem{Niebur}
+D. Niebur, \emph{A class of nonanalytic automorphic functions}, Nagoya Math. J. \textbf{52} (1973), 133--145.
+
+\bibitem{OEIS}
+OEIS Foundation Inc., \emph{The On-Line Encyclopedia of Integer Sequences}, sequence A230536, \url{https://oeis.org/A230536}.
+
+\bibitem{Padhi}
+J. S. Padhi, \emph{Sign patterns of real powers of infinite products: resolution of four conjectures of Schlosser and Zhou}, preprint, arXiv:2609.22324, 2026.
+
+\bibitem{SZ}
+M.~J. Schlosser and N.~H. Zhou, \emph{On the infinite Borwein product raised to a positive real power}, Ramanujan J. \textbf{61} (2023), 515--543.
+
+\bibitem{Yang}
+Y. Yang, \emph{Transformation formulas for generalized Dedekind eta functions}, Bull. London Math. Soc. \textbf{36} (2004), no.~5, 671--682.
+
+\bibitem{Zuckerman}
+H.~S. Zuckerman, \emph{On the coefficients of certain modular forms belonging to subgroups of the modular group}, Trans. Amer. Math. Soc. \textbf{45} (1939), no.~2, 298--321.
+
+\end{thebibliography}
+
+\end{document}
